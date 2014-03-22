@@ -21,10 +21,11 @@ class MailsController < ApplicationController
                                        :substitutions))
     if @mail.valid?
       url = "#{INTERNAL_OCEAN_API_URL}/#{ASYNC_JOB_VERSION}/async_jobs"
-      body = @mail.to_async_job_post_body_hash(nil).to_json
+      token = Api.service_token
+      body = @mail.to_async_job_post_body_hash(token).to_json
 
       begin
-        aj_resp = Api.request(url, 'POST', body: body, x_api_token: Api.service_token)
+        aj_resp = Api.request(url, 'POST', body: body, x_api_token: token)
       rescue Api::TimeoutError, Api::NoResponseError => e
         render_api_error 422, e.message
         return
