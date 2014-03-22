@@ -1,0 +1,6 @@
+smtp:
+  address: "YourEmailSMTPHostHere"
+  port: 25
+  user_name: "TheUsername"
+  password: "ThePassword"
+  authentication: :login
