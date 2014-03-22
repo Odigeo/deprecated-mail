@@ -1,7 +1,7 @@
 source 'https://rubygems.org'
 
 gem "rails", "~> 4.0"
-gem "ocean-rails"
+gem "ocean-rails", ">= 2.10.0"
 
 gem "jbuilder"
 gem 'rails-patch-json-encode'  # Required for Rails 4.0.x

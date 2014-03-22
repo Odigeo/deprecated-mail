@@ -4,5 +4,5 @@ class ApplicationController < ActionController::Base
 
   before_action :require_x_api_token
   before_action :authorize_action
-    
+
 end
