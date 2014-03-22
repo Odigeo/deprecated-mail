@@ -60,8 +60,6 @@ describe MailsController do
       post :send_sync, @args
       response.status.should == 204
     end
-
-    it "should check the mailer's result for errors"
   end
   
 end
