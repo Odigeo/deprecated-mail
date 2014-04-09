@@ -18,7 +18,7 @@ group :test, :development do
   gem "factory_girl_rails", "~> 4.0"
   gem "annotate", ">=2.5.0"
   gem "webmock"
-  gem "minitest"
+  gem "minitest", "= 4.7.5"
 end
 
 gem "protected_attributes"
