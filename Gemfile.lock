@@ -159,7 +159,6 @@ DEPENDENCIES
   html_to_plain_text
   jbuilder
   kramdown
-  minitest (= 4.7.5)
   ocean-rails (>= 2.10.0)
   oj
   protected_attributes
