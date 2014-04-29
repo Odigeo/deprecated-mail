@@ -5,7 +5,7 @@ class MailsController < ApplicationController
                             #                        :plaintext, :html, 
                             #                        :plaintext_url, :html_url,
                             #                        :substitutions],
-                            extra_actions: { 'send_sync' => ['send', "PUT"]}
+                            extra_actions: { 'send_sync' => ['send', "POST"]}
 
 
   #
