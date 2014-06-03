@@ -51,10 +51,8 @@ GEM
       factory_girl (~> 4.4.0)
       railties (>= 3.0.0)
     ffi (1.9.3)
-    ffi-rzmq (2.0.1)
-      ffi-rzmq-core (>= 1.0.1)
-    ffi-rzmq-core (1.0.3)
-      ffi (~> 1.9)
+    ffi-rzmq (1.0.3)
+      ffi
     hike (1.2.3)
     html_to_plain_text (1.0.2)
       nokogiri (>= 1.4.0)
@@ -77,9 +75,9 @@ GEM
       activemodel (~> 4.1.0)
       activesupport (~> 4.1.0)
       aws-sdk (~> 1.0)
-    ocean-rails (2.11.3)
+    ocean-rails (2.11.4)
       ffi
-      ffi-rzmq
+      ffi-rzmq (~> 1.0)
       jbuilder
       ocean-dynamo (>= 0.5.7)
       oj
