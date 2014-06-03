@@ -1,10 +1,9 @@
 source 'https://rubygems.org'
 
 gem 'rails', '~> 4.1.0'
-gem "ocean-rails", ">= 2.11.2"
+gem "ocean-rails", ">= 2.11.3"
 
 gem "jbuilder"
-gem 'rails-patch-json-encode'  # Required for Rails 4.0.x
 gem 'oj'
 
 gem 'kramdown'                 # Plain text => HTML
