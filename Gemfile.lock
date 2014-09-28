@@ -84,7 +84,7 @@ GEM
       activesupport (~> 4.1.0)
       aws-sdk (~> 1.0)
       aws-sdk-core
-    ocean-rails (3.5.1)
+    ocean-rails (3.5.2)
       ffi
       ffi-rzmq (~> 1.0)
       jbuilder
