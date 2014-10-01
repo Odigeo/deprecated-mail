@@ -25,7 +25,7 @@ class MailsController < ApplicationController
       body = @mail.to_async_job_post_body_hash(token).to_json
 
       begin
-        aj_resp = Api.request(url, 'POST', body: body, x_api_token: token)
+        aj_resp = Api.request(url, 'POST', body: body, x_api_token: token, credentials: Api.encode_credentials)
       rescue Api::TimeoutError, Api::NoResponseError => e
         render_api_error 422, e.message
         return
