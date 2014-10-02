@@ -161,19 +161,72 @@ describe SyncMail do
 
   describe "#deliver" do
 
-    it "should obtain any plaintext_url text if present"
-    it "should obtain any html_url text if present"
-    it "should perform the substitutions before delivery"
-
     it "should call the mailer" do
-      SynchronousMailer.should_receive(:general).with({:from=>"the-sender@example.com", 
-                                                       :to=>"the-recipient@example.com", 
-                                                       :subject=>"Welcome, tester", 
-                                                       :plaintext=>"This is the body of the email.", 
-                                                       :html=>"<p>This is the body of the email.</p>"}).
+      SynchronousMailer.should_receive(:general).
+        with({:from=>"the-sender@example.com", :to=>"the-recipient@example.com", 
+              :subject=>"Welcome, tester", 
+              :plaintext=>"This is the body of the email.", 
+              :html=>"<p>This is the body of the email.</p>"}).
         and_return(double("SynchronousMailer", :deliver => true) )
       SyncMail.new(@h).deliver
     end
+
+    it "should perform any substitutions before delivery" do
+      @h['plaintext'] = "This is the body of the email. Do you have a body?"
+      @h['html'] = "<p>This is the body of the email. Do you have a body?</p>"
+      @h['substitutions'] = {"body" => "corpus", 
+                             "tester" => "customer"}
+      SynchronousMailer.should_receive(:general).
+        with({:from=>"the-sender@example.com", :to=>"the-recipient@example.com", 
+              :subject=>"Welcome, customer", 
+              :plaintext=>"This is the corpus of the email. Do you have a corpus?", 
+              :html=>"<p>This is the corpus of the email. Do you have a corpus?</p>"}).
+        and_return(double("SynchronousMailer", :deliver => true))
+      SyncMail.new(@h).deliver
+    end
+
+    it "should obtain any plaintext_url text if present" do 
+      @h['plaintext'] = nil
+      @h['plaintext_url'] = "http://api.example.com/v1/texts/something/something/something"
+      expect(Api::RemoteResource).to receive(:get).with(@h['plaintext_url']).
+        and_return({'result' => 'Dynamic text rules.'})
+      SynchronousMailer.should_receive(:general).
+        with({:from=>"the-sender@example.com", :to=>"the-recipient@example.com", 
+              :subject=>"Welcome, tester", 
+              :plaintext=>"Dynamic text rules.", 
+              :html=>"<p>This is the body of the email.</p>"}).
+        and_return(double("SynchronousMailer", :deliver => true))
+      SyncMail.new(@h).deliver
+    end
+
+    it "should obtain any html_url text if present, using html if markdown is true" do
+      @h['html'] = nil
+      @h['html_url'] = "http://api.example.com/v1/texts/something/something/something"
+      expect(Api::RemoteResource).to receive(:get).with(@h['html_url']).
+        and_return({'markdown' => true, 'html' => '<p>Be <b>BOLD</b>!</p>'})
+      SynchronousMailer.should_receive(:general).
+        with({:from=>"the-sender@example.com", :to=>"the-recipient@example.com", 
+              :subject=>"Welcome, tester", 
+              :plaintext=>"This is the body of the email.", 
+              :html=>"<p>Be <b>BOLD</b>!</p>"}).
+        and_return(double("SynchronousMailer", :deliver => true))
+      SyncMail.new(@h).deliver
+    end
+
+    it "should obtain any html_url text if present, using result if markdown is false" do
+      @h['html'] = nil
+      @h['html_url'] = "http://api.example.com/v1/texts/something/something/something"
+      expect(Api::RemoteResource).to receive(:get).with(@h['html_url']).
+        and_return({'markdown' => false, 'result' => '<p>This is HTML stored as plaintext</p>'})
+      SynchronousMailer.should_receive(:general).
+        with({:from=>"the-sender@example.com", :to=>"the-recipient@example.com", 
+              :subject=>"Welcome, tester", 
+              :plaintext=>"This is the body of the email.", 
+              :html=>"<p>This is HTML stored as plaintext</p>"}).
+        and_return(double("SynchronousMailer", :deliver => true))
+      SyncMail.new(@h).deliver
+    end
+
   end
 
 end

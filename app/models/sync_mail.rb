@@ -47,7 +47,24 @@ class SyncMail
 
 
   def deliver
-    # TODO: Fetch URLs if present, perform substitutions
+    # Retrieve URLs, if present
+    if plaintext.blank? && plaintext_url.present?
+      rsrc = Api::RemoteResource.get(plaintext_url)
+      self.plaintext = rsrc['result'] if rsrc
+    end
+    if html.blank? && html_url
+      rsrc = Api::RemoteResource.get(html_url)
+      if rsrc
+        self.html = rsrc['markdown'] ? rsrc['html'] : rsrc['result']
+      end
+    end
+    # Perform substitutions
+    (substitutions || {}).each do |k, v|
+      subject.gsub! k, v if subject
+      plaintext.gsub! k, v if plaintext
+      html.gsub! k, v if html
+    end
+    # Send it
     SynchronousMailer.general(from: from, to: to, subject: subject,
                               plaintext: plaintext, html: html).deliver
   end
