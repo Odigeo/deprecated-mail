@@ -22,7 +22,7 @@ class SyncMail
 
 
   def to_async_job_post_body_hash(token)
-    { 'credentials' => Api.encode_credentials(API_USER, API_PASSWORD),
+    { 'credentials' => Api.credentials(API_USER, API_PASSWORD),
       'token' => token,
       'steps' => [{ 'step_time' => EMAIL_STEP_TIME,
                     'poison_limit' => EMAIL_POISON_LIMIT,

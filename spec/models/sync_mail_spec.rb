@@ -65,7 +65,7 @@ describe SyncMail do
     it "should contain encoded credentials as a string" do
       cred = SyncMail.new(@h).to_async_job_post_body_hash('')['credentials']
       cred.should be_a String
-      cred.should == Api.encode_credentials(API_USER, API_PASSWORD)
+      cred.should == Api.credentials(API_USER, API_PASSWORD)
     end
 
     it "should contain the token argument" do

@@ -58,7 +58,7 @@ describe MailsController do
       Api.should_receive(:request).with("#{INTERNAL_OCEAN_API_URL}/#{ASYNC_JOB_VERSION}/async_jobs",
                                         'POST', 
                                         body: an_instance_of(String),
-                                        x_api_token: "some-token", credentials: Api.encode_credentials
+                                        x_api_token: "some-token", credentials: Api.credentials
                                        ).and_return(double(headers: {}, body: {'async_job' => {}}))
       post :create, @args
       response.status.should == 202
