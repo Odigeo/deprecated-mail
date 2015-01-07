@@ -10,9 +10,6 @@ gem 'html_to_plain_text'       # HTML => plain text
 
 gem 'email_validator'
 
-#gem  "mini_portile", "0.6.0"  # Lose this ASAP
-#gem  "nokogiri", "1.6.3.1"    # Lose this ASAP
-
 group :test, :development do
   gem "rspec-rails", "~> 2.0"
   gem "simplecov", require: false
