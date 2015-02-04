@@ -3,6 +3,8 @@ source 'https://rubygems.org'
 gem 'rails', '4.1.9'
 gem "ocean-rails"
 
+gem 'oj'
+gem 'oj_mimic_json'
 gem "jbuilder"
 
 gem 'kramdown'                 # Plain text => HTML
