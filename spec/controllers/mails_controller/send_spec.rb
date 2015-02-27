@@ -24,41 +24,41 @@ describe MailsController do
     
     it "should return JSON" do
       post :send_sync, @args
-      response.content_type.should == "application/json"
+      expect(response.content_type).to eq("application/json")
     end
     
     it "should return a 400 if the X-API-Token header is missing" do
       request.headers['X-API-Token'] = nil
       post :send_sync, @args
-      response.status.should == 400
+      expect(response.status).to eq(400)
     end
     
     it "should return a 400 if the authentication represented by the X-API-Token can't be found" do
       request.headers['X-API-Token'] = 'unknown, matey'
-      Api.stub(:permitted?).and_return(double(:status => 400, :body => {:_api_error => []}))
+      allow(Api).to receive(:permitted?).and_return(double(:status => 400, :body => {:_api_error => []}))
       post :send_sync, @args
-      response.status.should == 400
-      response.content_type.should == "application/json"
+      expect(response.status).to eq(400)
+      expect(response.content_type).to eq("application/json")
     end
 
     it "should return a 403 if the X-API-Token doesn't yield POST authorisation for sending synchronised Mails" do
-      Api.stub(:permitted?).and_return(double(:status => 403, :body => {:_api_error => []}))
+      allow(Api).to receive(:permitted?).and_return(double(:status => 403, :body => {:_api_error => []}))
       post :send_sync, @args
-      response.status.should == 403
-      response.content_type.should == "application/json"
+      expect(response.status).to eq(403)
+      expect(response.content_type).to eq("application/json")
     end
 
     it "should return a 422 when there are validation errors" do
       post :send_sync, @args.merge(:to => nil)
-      response.status.should == 422
-      response.content_type.should == "application/json"
-      JSON.parse(response.body).should == {"to"=>["is required"]}
+      expect(response.status).to eq(422)
+      expect(response.content_type).to eq("application/json")
+      expect(JSON.parse(response.body)).to eq({"to"=>["is required"]})
     end
                 
     it "should return a 204 and send the mail when successful" do
-      SyncMail.any_instance.should_receive(:deliver)
+      expect_any_instance_of(SyncMail).to receive(:deliver)
       post :send_sync, @args
-      response.status.should == 204
+      expect(response.status).to eq(204)
     end
   end
   

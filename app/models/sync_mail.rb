@@ -66,7 +66,7 @@ class SyncMail
     end
     # Send it
     SynchronousMailer.general(from: from, to: to, subject: subject,
-                              plaintext: plaintext, html: html).deliver
+                              plaintext: plaintext, html: html).deliver_now
   end
 
 end
