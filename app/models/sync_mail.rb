@@ -68,7 +68,7 @@ class SyncMail
     begin
       SynchronousMailer.general(from: from, to: to, subject: subject,
                                 plaintext: plaintext, html: html).deliver
-    rescue RuntimeError => e
+    rescue StandardError => e
       Rails.logger.warn "Exception when sending email from '#{from}' to '#{to}': '#{e.message}'"
       raise e
     end
