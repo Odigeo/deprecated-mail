@@ -227,6 +227,17 @@ describe SyncMail do
       SyncMail.new(@h).deliver
     end
 
+    it "should log and re-raise any exception encountered during delivery" do
+      m = SyncMail.new(@h)
+      dbl = double
+      allow(dbl).to receive(:deliver).and_raise RuntimeError, "Boom"
+      SynchronousMailer.should_receive(:general).and_return(dbl)
+      expect(Rails.logger).to receive(:warn).
+        with("Exception when sending email from 'the-sender@example.com' to 'the-recipient@example.com': 'Boom'")
+      expect { m.deliver }.
+        to raise_error(RuntimeError, "Boom")
+    end
+
   end
 
 end

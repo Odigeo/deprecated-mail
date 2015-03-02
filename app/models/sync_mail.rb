@@ -65,8 +65,13 @@ class SyncMail
       html.gsub! k, v if html
     end
     # Send it
-    SynchronousMailer.general(from: from, to: to, subject: subject,
-                              plaintext: plaintext, html: html).deliver
+    begin
+      SynchronousMailer.general(from: from, to: to, subject: subject,
+                                plaintext: plaintext, html: html).deliver
+    rescue RuntimeError => e
+      Rails.logger.warn "Exception when sending email from '#{from}' to '#{to}': '#{e.message}'"
+      raise e
+    end
   end
 
 end
